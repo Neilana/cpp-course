@@ -3,17 +3,17 @@
 using namespace IlluminatiConfirmed;
 using namespace experimental;
 
-GenericObjectFactory<std::string, BaseCharacter, b2World *, sf::Texture *,
-                     CharacterSpriteInfo>
-FactoryObjects::create_factory() {
-  GenericObjectFactory<std::string, BaseCharacter, b2World *, sf::Texture *,
-                       CharacterSpriteInfo>
-      characters_factory;
+// GenericObjectFactory<std::string, BaseCharacter, b2World *, sf::Texture *,
+//                     CharacterSpriteInfo>
+// FactoryObjects::create_factory() {
+//  GenericObjectFactory<std::string, BaseCharacter, b2World *, sf::Texture *,
+//                       CharacterSpriteInfo>
+//      characters_factory;
 
-  characters_factory.add<CharacterSouthPark>("Park");
-  characters_factory.add<CharacterAlinasBoys>("Alinas");
-  return characters_factory;
-}
+//  characters_factory.add<CharacterSouthPark>("Park");
+//  characters_factory.add<CharacterAlinasBoys>("Alinas");
+//  return characters_factory;
+//}
 
 std::pair<std::shared_ptr<Ground>,
           std::vector<std::shared_ptr<experimental::BaseInterface>>>
@@ -47,7 +47,7 @@ FactoryObjects::create_character(int id, b2World *world) {
   static GenericObjectFactory<std::string, experimental::BaseCharacter,
                               b2World *, sf::Texture *,
                               experimental::CharacterSpriteInfo>
-      characters_factory = create_factory();
+      characters_factory = registrationTypesOfCharacters();
   //мб сюда стоит передвать эту мапу... хз где она в итоге должна храниться
   static std::map<std::string, std::shared_ptr<sf::Texture>> vec_of_textures;
 
@@ -71,13 +71,6 @@ FactoryObjects::create_character(int id, b2World *world) {
             master)(world, p_texture.get(),
                     experimental::CharacterSpriteInfo(
                         {width, height, size, frames, 300, 300})));
-
-    //    auto pers = std::static_pointer_cast<experimental::BaseInterface>(
-    //        std::make_shared<experimental::CharacterSouthPark>(
-    //            world, p_texture.get(), experimental::CharacterSpriteInfo(
-    //                                   {width, height, width, frames, 300,
-    //                                   300})));
-
     return pers;
   }
   throw EXCEPTION("Something wrong", nullptr);

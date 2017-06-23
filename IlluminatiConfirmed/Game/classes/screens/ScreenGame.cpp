@@ -45,8 +45,6 @@ ScreenName ScreenGame::run(Game &game, sf::RenderWindow &window) {
     sf::Event event;
     sf::Mouse::getPosition();
 
-
-
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
@@ -56,33 +54,36 @@ ScreenName ScreenGame::run(Game &game, sf::RenderWindow &window) {
           currentHero = game.selectNextHero();
         }
         // если написать ниже - будет трэш, будет оооч много создаваться сразу
-        if (event.key.code == sf::Keyboard::Space) {
-          // attack
+      }
+      if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+          currentHero->attack();
         }
       }
     }
+
     b2Vec2 velocity = {0.f, 0.f};
-    if (Keyboard::isKeyPressed(Keyboard::Left)) {
+    if (Keyboard::isKeyPressed(Keyboard::A) ||
+        Keyboard::isKeyPressed(Keyboard::Left)) {
       velocity += b2Vec2({-1.f, 0.f});
     }
-    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+    if (Keyboard::isKeyPressed(Keyboard::D) ||
+        Keyboard::isKeyPressed(Keyboard::Right)) {
       // currentHero->move(Direction::Right, time);
       velocity += b2Vec2({+1.f, 0.f});
     }
-    if (Keyboard::isKeyPressed(Keyboard::Up)) {
+    if (Keyboard::isKeyPressed(Keyboard::W) ||
+        Keyboard::isKeyPressed(Keyboard::Up)) {
       // currentHero->move(Direction::Up, time);
       velocity += b2Vec2({0.f, -1.f});
     }
-    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+    if (Keyboard::isKeyPressed(Keyboard::S) ||
+        Keyboard::isKeyPressed(Keyboard::Down)) {
       // currentHero->move(Direction::Down, time);
       velocity += b2Vec2({0.f, +1.f});
     }
     if (velocity.Length() > 0.0) {
       currentHero->move(velocity, time);
-    }
-
-    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-      return ScreenName::MainMenu;
     }
 
     game.updatePhysics(time);
@@ -107,6 +108,9 @@ ScreenName ScreenGame::run(Game &game, sf::RenderWindow &window) {
     }
 
     window.display();
+    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+      return ScreenName::MainMenu;
+    }
   }
   return ScreenName::Game;
 }
